@@ -32,6 +32,10 @@ if (signupForm) {
     if (error) {
       alert(error.message);
     } else {
+      // ✅ STORE EMAIL FOR OTP VERIFICATION
+      localStorage.setItem("auth_email", email);
+
+      // ✅ REDIRECT TO OTP PAGE
       window.location.href = "../html/verify-otp.html";
     }
   });
@@ -58,6 +62,10 @@ if (loginForm) {
     if (error) {
       alert(error.message);
     } else {
+      // ✅ STORE EMAIL FOR OTP VERIFICATION
+      localStorage.setItem("auth_email", email);
+
+      // ✅ REDIRECT TO OTP PAGE
       window.location.href = "../html/verify-otp.html";
     }
   });
