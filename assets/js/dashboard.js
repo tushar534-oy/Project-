@@ -1,14 +1,15 @@
 import { supabase } from "./supabase.js";
 import { requireAuth } from "./auth-guard.js";
 
-// protect page
+// Protect page
 requireAuth();
 
-// logout
+// Logout
 const logoutBtn = document.getElementById("logoutBtn");
 
-logoutBtn.addEventListener("click", async () => {
-  await supabase.auth.signOut();
-  window.location.href = "/html/sign-in.html";
-
-});
+if (logoutBtn) {
+  logoutBtn.addEventListener("click", async () => {
+    await supabase.auth.signOut();
+    window.location.href = "../html/sign-in.html";
+  });
+}

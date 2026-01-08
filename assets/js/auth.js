@@ -1,9 +1,10 @@
 import { supabase } from "./supabase.js";
 
 /* =========================
-   SIGNUP (OTP)
+   SIGNUP (EMAIL OTP)
 ========================= */
 const signupForm = document.getElementById("signup-form");
+
 if (signupForm) {
   signupForm.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -22,22 +23,25 @@ if (signupForm) {
           company_name,
           phone,
           whatsapp,
-          role: "client"
-        }
-      }
+          role: "client",
+        },
+      },
     });
 
     if (error) {
       alert(error.message);
-    } else {
-      alert("OTP sent to your email. Please verify.");
-      // redirect happens AFTER verification, not here
+      return;
     }
+
+    // Save email temporarily for OTP verify
+    localStorage.setItem("otp_email", email);
+
+    window.location.href = "../html/verify-otp.html";
   });
 }
 
 /* =========================
-   LOGIN (OTP)
+   LOGIN (EMAIL OTP)
 ========================= */
 const loginForm = document.getElementById("login-form");
 
@@ -51,8 +55,10 @@ if (loginForm) {
 
     if (error) {
       alert(error.message);
-    } else {
-      alert("OTP sent to your email. Please verify.");
+      return;
     }
+
+    localStorage.setItem("otp_email", email);
+    window.location.href = "../html/verify-otp.html";
   });
 }
