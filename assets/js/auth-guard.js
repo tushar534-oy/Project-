@@ -1,17 +1,17 @@
+// assets/js/auth-guard.js
 import { supabase } from "./supabase.js";
 
 export async function requireAuth() {
-  const { data: { user } } = await supabase.auth.getUser();
-
-  if (!user) {
-    window.location.replace("sign-in.html"); // remove back history
+  const { data } = await supabase.auth.getUser();
+  if (!data.user) {
+    await supabase.auth.signOut();
+    window.location.replace("../html/sign-in.html");
   }
 }
 
 export async function redirectIfLoggedIn() {
-  const { data: { user } } = await supabase.auth.getUser();
-
-  if (user) {
-    window.location.replace("dashboard.html");
+  const { data } = await supabase.auth.getUser();
+  if (data.user) {
+    window.location.replace("../html/dashboard.html");
   }
 }

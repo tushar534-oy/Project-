@@ -1,36 +1,16 @@
+// assets/js/dashboard.js
 import { supabase } from "./supabase.js";
 import { requireAuth } from "./auth-guard.js";
 
-// Protect dashboard
-requireAuth();
+// 1️⃣ Protect page
+await requireAuth();
 
-/* =========================
-   MENU SECTION HANDLING
-========================= */
-document.querySelectorAll(".menu-link").forEach(btn => {
-  btn.addEventListener("click", () => {
-    const section = btn.dataset.section;
-
-    document.querySelectorAll(".dashboard-section")
-      .forEach(s => s.classList.add("d-none"));
-
-    document.getElementById(`section-${section}`)
-      .classList.remove("d-none");
-  });
-});
-
-/* =========================
-   LOGOUT MANUALLY
-========================= */
-const logoutBtn = document.getElementById("logoutBtn");
-logoutBtn.addEventListener("click", async () => {
+// 2️⃣ Auto-logout on tab close / back / switch
+window.addEventListener("beforeunload", async () => {
   await supabase.auth.signOut();
-  window.location.replace("sign-in.html");
 });
 
-/* =========================
-   AUTO LOGOUT ON TAB SWITCH
-========================= */
+// 3️⃣ Force logout when page becomes hidden (tab switch)
 document.addEventListener("visibilitychange", async () => {
   if (document.hidden) {
     await supabase.auth.signOut();
@@ -38,9 +18,9 @@ document.addEventListener("visibilitychange", async () => {
   }
 });
 
-/* =========================
-   AUTO LOGOUT WHEN NAVIGATING AWAY
-========================= */
-window.addEventListener("beforeunload", async () => {
+// 4️⃣ Logout button
+const logoutBtn = document.getElementById("logoutBtn");
+logoutBtn.addEventListener("click", async () => {
   await supabase.auth.signOut();
+  window.location.replace("sign-in.html");
 });
