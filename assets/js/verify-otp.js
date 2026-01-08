@@ -1,30 +1,21 @@
 import { supabase } from "./supabase.js";
 
-const otpForm = document.getElementById("otp-form");
+const form = document.getElementById("otp-form");
 
-otpForm.addEventListener("submit", async (e) => {
+form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  const otp = document.getElementById("otp").value;
-  const email = localStorage.getItem("otp_email");
-
-  if (!email) {
-    alert("Email not found. Please sign in again.");
-    window.location.href = "../html/sign-in.html";
-    return;
-  }
+  const token = document.getElementById("otp").value;
 
   const { error } = await supabase.auth.verifyOtp({
-    email,
-    token: otp,
-    type: "email",
+    email: null,
+    token,
+    type: "email"
   });
 
   if (error) {
-    alert(error.message);
-    return;
+    alert("Invalid or expired OTP");
+  } else {
+    window.location.href = "../html/dashboard.html";
   }
-
-  localStorage.removeItem("otp_email");
-  window.location.href = "../html/dashboard.html";
 });

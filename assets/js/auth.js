@@ -9,34 +9,31 @@ if (signupForm) {
   signupForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
+    const email = document.getElementById("email").value;
     const full_name = document.getElementById("full_name").value;
     const company_name = document.getElementById("company_name").value;
-    const email = document.getElementById("email").value;
     const phone = document.getElementById("phone").value;
     const whatsapp = document.getElementById("whatsapp").value;
 
     const { error } = await supabase.auth.signInWithOtp({
       email,
       options: {
+        shouldCreateUser: true,
         data: {
           full_name,
           company_name,
           phone,
           whatsapp,
-          role: "client",
-        },
-      },
+          role: "client"
+        }
+      }
     });
 
     if (error) {
       alert(error.message);
-      return;
+    } else {
+      window.location.href = "../html/verify-otp.html";
     }
-
-    // Save email temporarily for OTP verify
-    localStorage.setItem("otp_email", email);
-
-    window.location.href = "../html/verify-otp.html";
   });
 }
 
@@ -51,14 +48,17 @@ if (loginForm) {
 
     const email = document.getElementById("login_email").value;
 
-    const { error } = await supabase.auth.signInWithOtp({ email });
+    const { error } = await supabase.auth.signInWithOtp({
+      email,
+      options: {
+        shouldCreateUser: false
+      }
+    });
 
     if (error) {
       alert(error.message);
-      return;
+    } else {
+      window.location.href = "../html/verify-otp.html";
     }
-
-    localStorage.setItem("otp_email", email);
-    window.location.href = "../html/verify-otp.html";
   });
 }
