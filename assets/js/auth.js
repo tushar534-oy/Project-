@@ -2,7 +2,7 @@
 import { supabase } from "./supabase.js";
 
 /* =========================
-    SIGNUP (OTP)
+   SIGNUP (OTP)
 ========================= */
 const signupForm = document.getElementById("signup-form");
 
@@ -20,23 +20,19 @@ if (signupForm) {
       email,
       options: {
         shouldCreateUser: true,
-        data: { full_name, company_name, phone, whatsapp, role: "client" },
-      },
+        data: { full_name, company_name, phone, whatsapp }
+      }
     });
 
-    if (error) {
-      alert(error.message);
-      return;
-    }
+    if (error) return alert(error.message);
 
-    // Save email for OTP verification
     localStorage.setItem("auth_email", email);
     window.location.href = "../html/verify-otp.html";
   });
 }
 
 /* =========================
-    LOGIN (OTP)
+   LOGIN (OTP)
 ========================= */
 const loginForm = document.getElementById("login-form");
 
@@ -51,10 +47,7 @@ if (loginForm) {
       options: { shouldCreateUser: false }
     });
 
-    if (error) {
-      alert(error.message);
-      return;
-    }
+    if (error) return alert(error.message);
 
     localStorage.setItem("auth_email", email);
     window.location.href = "../html/verify-otp.html";

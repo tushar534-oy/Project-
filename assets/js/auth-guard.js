@@ -1,4 +1,3 @@
-// assets/js/auth-guard.js
 import { supabase } from "./supabase.js";
 
 export async function requireAuth() {

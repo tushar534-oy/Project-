@@ -10,21 +10,17 @@ otpForm.addEventListener("submit", async (e) => {
   const token = document.getElementById("otp").value;
 
   if (!email) {
-    alert("Session expired. Please login again.");
-    window.location.href = "../html/sign-in.html";
-    return;
+    alert("Session expired. Login again.");
+    return window.location.href = "../html/sign-in.html";
   }
 
-  const { data, error } = await supabase.auth.verifyOtp({
+  const { error } = await supabase.auth.verifyOtp({
     email,
     token,
     type: "email"
   });
 
-  if (error) {
-    alert("Invalid or expired OTP.");
-    return;
-  }
+  if (error) return alert("Invalid or expired OTP");
 
   localStorage.removeItem("auth_email");
   window.location.href = "../html/dashboard.html";
