@@ -18,7 +18,6 @@ if (signupForm) {
     const { error } = await supabase.auth.signInWithOtp({
       email,
       options: {
-        shouldCreateUser: true,
         data: {
           full_name,
           company_name,
@@ -31,13 +30,11 @@ if (signupForm) {
 
     if (error) {
       alert(error.message);
-    } else {
-      // ✅ STORE EMAIL FOR OTP VERIFICATION
-      localStorage.setItem("auth_email", email);
-
-      // ✅ REDIRECT TO OTP PAGE
-      window.location.href = "../html/verify-otp.html";
+      return;
     }
+
+    localStorage.setItem("auth_email", email);
+    window.location.href = "../html/verify-otp.html";
   });
 }
 
@@ -52,21 +49,14 @@ if (loginForm) {
 
     const email = document.getElementById("login_email").value;
 
-    const { error } = await supabase.auth.signInWithOtp({
-      email,
-      options: {
-        shouldCreateUser: false
-      }
-    });
+    const { error } = await supabase.auth.signInWithOtp({ email });
 
     if (error) {
       alert(error.message);
-    } else {
-      // ✅ STORE EMAIL FOR OTP VERIFICATION
-      localStorage.setItem("auth_email", email);
-
-      // ✅ REDIRECT TO OTP PAGE
-      window.location.href = "../html/verify-otp.html";
+      return;
     }
+
+    localStorage.setItem("auth_email", email);
+    window.location.href = "../html/verify-otp.html";
   });
 }
