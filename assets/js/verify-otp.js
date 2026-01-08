@@ -1,25 +1,35 @@
 import { supabase } from "./supabase.js";
 
-// get email stored during signup/login
-const email = localStorage.getItem("auth_email");
+const otpForm = document.getElementById("otp-form");
 
-const form = document.getElementById("otp-form");
+if (otpForm) {
+  otpForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-form.addEventListener("submit", async (e) => {
-  e.preventDefault();
+    const token = document.getElementById("otp").value.trim();
+    const email = localStorage.getItem("auth_email");
 
-  const token = document.getElementById("otp").value;
+    if (!email) {
+      alert("Email not found. Please login again.");
+      window.location.href = "../html/sign-in.html";
+      return;
+    }
 
-  const { error } = await supabase.auth.verifyOtp({
-    email: email,
-    token: token,
-    type: "email"
-  });
+    const { data, error } = await supabase.auth.verifyOtp({
+      email,
+      token,
+      type: "email"
+    });
 
-  if (error) {
-    alert(error.message || "Invalid or expired OTP");
-  } else {
+    if (error) {
+      alert("Invalid or expired OTP");
+      return;
+    }
+
+    // ✅ OTP VERIFIED → CLEANUP
     localStorage.removeItem("auth_email");
+
+    // ✅ REDIRECT TO DASHBOARD
     window.location.href = "../html/dashboard.html";
-  }
-});
+  });
+}
