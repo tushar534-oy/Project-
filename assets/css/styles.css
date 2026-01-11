@@ -16793,3 +16793,18 @@ ul {
 
 
 
+
+    /* Custom CSS for carousel image sizing */
+    .portfolio-img {
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 8px;
+    }
+
+    .portfolio-img img {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      max-height: 290px;
+      display: block;
+    }
