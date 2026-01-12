@@ -8,6 +8,21 @@ const SUPABASE_ANON_KEY =
 const supabase = supabaseJs.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // ===============================
+// HARD BLOCK native submit
+// ===============================
+window.addEventListener(
+  "submit",
+  (e) => {
+    const form = e.target;
+    if (form && form.tagName === "FORM") {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+    }
+  },
+  true // capture phase
+);
+
+// ===============================
 // Form Handling
 // ===============================
 document.addEventListener("DOMContentLoaded", () => {
@@ -19,7 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    e.stopPropagation();
+    e.stopImmediatePropagation();
 
     submitButton.disabled = true;
     buttonText.textContent = "Submitting...";
