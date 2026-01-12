@@ -1,6 +1,7 @@
 // ===============================
 // Supabase Configuration
 // ===============================
+
 const SUPABASE_URL = "https://hydtchbejefpsrcbcvta.supabase.co";
 const SUPABASE_ANON_KEY =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh5ZHRjaGJlamVmcHNyY2JjdnRhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc4MjExNjAsImV4cCI6MjA4MzM5NzE2MH0.-02P-evbPRxhOyeRzJNU_QX5XkOOU91ofbM9U3GaK90";
@@ -60,3 +61,4 @@ form.addEventListener("submit", async (e) => {
     buttonText.textContent = "Book Infrastructure Call";
   }
 });
+
