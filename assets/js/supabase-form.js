@@ -1,64 +1,60 @@
 // ===============================
 // Supabase Configuration
 // ===============================
-
 const SUPABASE_URL = "https://hydtchbejefpsrcbcvta.supabase.co";
 const SUPABASE_ANON_KEY =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh5ZHRjaGJlamVmcHNyY2JjdnRhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc4MjExNjAsImV4cCI6MjA4MzM5NzE2MH0.-02P-evbPRxhOyeRzJNU_QX5XkOOU91ofbM9U3GaK90";
 
-const supabase = supabaseJs.createClient(
-  SUPABASE_URL,
-  SUPABASE_ANON_KEY
-);
+const supabase = supabaseJs.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // ===============================
 // Form Handling
 // ===============================
-const form = document.querySelector("form");
-const submitButton = form.querySelector('button[type="submit"]');
-const buttonText = submitButton.querySelector(".btn-text");
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.querySelector("form");
+  if (!form) return;
 
-form.addEventListener("submit", async (e) => {
-  e.preventDefault();
+  const submitButton = form.querySelector('button[type="submit"]');
+  const buttonText = submitButton.querySelector(".btn-text");
 
-  // Prevent double submit
-  submitButton.disabled = true;
-  buttonText.textContent = "Submitting...";
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
 
-  const formData = new FormData(form);
+    submitButton.disabled = true;
+    buttonText.textContent = "Submitting...";
 
-  const payload = {
-    full_name: formData.get("full_name"),
-    business_name: formData.get("business_name"),
-    work_email: formData.get("work_email"),
-    phone: formData.get("phone"),
-    website: formData.get("website") || null,
-    business_stage: formData.get("business_stage"),
-    infrastructure: formData.get("infrastructure"),
-    budget: formData.get("budget"),
-    challenge: formData.get("challenge"),
-  };
+    const payload = {
+      full_name: document.getElementById("fullName")?.value.trim(),
+      business_name: document.getElementById("businessName")?.value.trim(),
+      work_email: document.getElementById("workEmail")?.value.trim(),
+      phone: document.getElementById("phone")?.value.trim(),
+      website: document.getElementById("website")?.value.trim() || null,
+      business_stage: document.getElementById("businessStage")?.value,
+      infrastructure: document.getElementById("infrastructure")?.value,
+      budget: document.getElementById("budget")?.value,
+      challenge: document.getElementById("challenge")?.value.trim(),
+    };
 
-  try {
-    const { error } = await supabase
-      .from("infrastructure_leads")
-      .insert([payload]);
+    try {
+      const { error } = await supabase
+        .from("infrastructure_leads")
+        .insert([payload]);
 
-    if (error) {
-      console.error("Supabase error:", error);
-      alert("Something went wrong. Please try again.");
-      return;
+      if (error) {
+        console.error("Supabase error:", error);
+        alert("Something went wrong. Please try again.");
+        return;
+      }
+
+      alert("Thank you! Our team will contact you within 24 business hours.");
+      form.reset();
+    } catch (err) {
+      console.error("Unexpected error:", err);
+      alert("Unexpected error. Please refresh and try again.");
+    } finally {
+      submitButton.disabled = false;
+      buttonText.textContent = "Book Infrastructure Call";
     }
-
-    // Success
-    alert("Thank you! Our team will contact you within 24 business hours.");
-    form.reset();
-  } catch (err) {
-    console.error("Unexpected error:", err);
-    alert("Unexpected error. Please refresh and try again.");
-  } finally {
-    submitButton.disabled = false;
-    buttonText.textContent = "Book Infrastructure Call";
-  }
+  });
 });
-
